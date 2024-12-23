@@ -1,8 +1,9 @@
+# Load libraries
 library(glmnet)
 library(MASS)
-library(car) # Use vif() to check collinearity
 
-MyData <- read.csv("Class_Data_3.csv") # Add data with binary output
+# Load data file with binary output
+MyData <- read.csv("Class_Data_3.csv")
 MyData2 <- MyData[c(2:15)] # Remove ID column
 MyDataScale <- as.data.frame(scale(MyData2)) # Scale data by columns
 MyDataScale$Enhancement <- MyData$Enhancement # Keep Enhancement column as a binary output
