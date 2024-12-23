@@ -1,7 +1,8 @@
+# Load libraries
 library(randomForest)
 library(ggplot2)
-library(caret)  # For stratified sampling
-library(pROC)   # For ROC curve and AUC calculation
+library(caret)
+library(pROC)
 
 # Load the data
 MyData <- read.csv("Class_Data_2.csv")
@@ -12,10 +13,10 @@ MyData$Enhancement <- as.factor(MyData$Enhancement)
 # Remove the 'ID' column for the analysis
 MyData <- MyData[ , -1]  # Removes the first column (ID)
 
-# Check the structure of your data
+# Check data structure
 str(MyData)
 
-# Initialize variables to store results
+# Initialise variables to store results
 n_iterations <- 20  # Set how many times you want to repeat the testing
 set.seed(123)  # Set seed for reproducibility
 
@@ -31,10 +32,10 @@ all_true_labels <- c() # This will hold all true labels
 # Loop through multiple iterations to split and train/test
 for (i in 1:n_iterations) {
   # Set seed for each iteration to ensure reproducibility
-  set.seed(123 + i)  # Changing the seed slightly each time
+  set.seed(123 + i)
   
   # Stratified sampling: create a partition keeping an even distribution of the target variable
-  train_index <- createDataPartition(MyData$Enhancement, p = 0.7, list = FALSE)  # 70% training
+  train_index <- createDataPartition(MyData$Enhancement, p = 0.7, list = FALSE)
   train_data <- MyData[train_index, ]
   test_data <- MyData[-train_index, ]
   
@@ -96,13 +97,13 @@ print(paste("Coefficient of Variation (AUC):", round(cv_auc, 2), "%"))
 # Plot average ROC curve using all aggregated predictions and labels
 average_roc <- roc(all_true_labels, all_pred_probs)
 
-# Plotting with ggplot
 # Extract ROC data
 roc_data <- data.frame(
   FPR = 1 - average_roc$specificities,  # False Positive Rate (1 - Specificity)
   TPR = average_roc$sensitivities   # True Positive Rate (Sensitivity)
 )
 
+# Create figures with ggplot
 Figure_roc <- ggplot(data = roc_data,
        mapping = aes(x = FPR,
                      y = TPR))+
