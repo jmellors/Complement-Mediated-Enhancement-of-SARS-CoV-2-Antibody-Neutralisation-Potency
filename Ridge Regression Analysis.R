@@ -1,9 +1,9 @@
-# Load necessary libraries
+# Load libraries
 library(glmnet)
 library(MASS)
 
-# Read data
-MyData <- read.csv("Class_Data_3.csv")  # Add data with binary output
+# Load data with binary output
+MyData <- read.csv("Class_Data_3.csv")
 MyData2 <- MyData[c(2:15)]  # Remove ID column
 MyDataScale <- as.data.frame(scale(MyData2))  # Scale data by columns
 MyDataScale$Enhancement <- MyData$Enhancement  # Keep Enhancement column as binary output
@@ -14,7 +14,7 @@ x <- model.matrix(Enhancement ~ IgG1 + IgG2 + IgG3 + IgG4 + ADCD + Total_IgG +
                   data = MyDataScale)[, -1]  # Remove intercept
 y <- MyDataScale$Enhancement
 
-# Bootstrap Ridge Regression Function
+# Bootstrap ridge regression
 bootstrap_ridge <- function(data, x, y, n_bootstrap = 1000, alpha = 0) {
   n <- nrow(data)
   coef_matrix <- matrix(NA, nrow = n_bootstrap, ncol = ncol(x))
